@@ -55,8 +55,25 @@ Galaxies naturally fall into two distinct populations:
 
 * **The "Green Valley"**: The sparse region between these two peaks contains galaxies that are in a transition phase, likely on their way from the blue cloud to the red sequence as their star formation shuts down.
 
-## ML Models' Training
+## ML Models and metrics
 For this study three regression models were trained: Random Forest, XGBoost and a Linear Regression. 
 The primary goal was to identify the best performing model in predicting a galaxy distance (spectroscopic redshift value) with just the use of photometric data (four color indices). 
 
 Here are the key final metrics of the models: 
+|    | Model                    |    MAE |   RMSE |       R2 |   Spearman |
+|---:|:-------------------------|-------:|-------:|---------:|-----------:|
+|  1 | Random Forest            | 0.0152 | 0.0206 | 0.77662  |   0.857364 |
+|  2 | XGBoost                  | 0.0156 | 0.0210 | 0.768048 |   0.851972 |
+|  0 | Linear Regression_Scaled | 0.0248 | 0.0312 | 0.489872 |   0.703135 |
+
+The Random Forest Model is the one that performs better for all four metrics considered, but it is closely followed by the XGBoost. 
+The Linear Regression performed poorly, explaining only **48.99%** of the variance. This confirms the visual analysis: the relationship between color and redshift is complex and **non-linear**. The linear model's failure to capture this, along with its violation of core assumptions (linearity and homoscedasticity) shown in the notebook, justifies the need for more advanced models.
+In fact, the Random Forest and XGBoost models, which *can* handle non-linear relationships, were far more successful, explaining **~78%** of the variance.
+
+Here's the Comparative Dashboard between the three models: 
+![Comparative Dashboard](model-comparison-dashboard.png)
+
+This dashboard visually confirms the models' performance. 
+
+# Additional Notes
+ This project uses `git-lfs` to handle the large `SDSS_GalaxyData.csv` file. You must have it installed.
